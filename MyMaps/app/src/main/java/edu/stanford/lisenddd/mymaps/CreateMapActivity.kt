@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -140,9 +141,9 @@ class CreateMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun dropPinEffect(marker: Marker) {
         // Handler allows us to repeat a code block after a specified delay
-        val handler = Handler()
-        val start: Long = SystemClock.uptimeMillis()
-        val duration: Long = 1500
+        val handler = Handler(Looper.getMainLooper())
+        val start = SystemClock.uptimeMillis()
+        val duration = 1000
 
         // Use the bounce interpolator
         val interpolator: Interpolator = BounceInterpolator()
@@ -161,8 +162,8 @@ class CreateMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 // Set the anchor
                 marker.setAnchor(0.5f, 1.0f + 14 * t)
                 if (t > 0.0) {
-                    // Post this event again 20ms from now.
-                    handler.postDelayed(this, 20)
+                    // Post this event again 15ms from now.
+                    handler.postDelayed(this, 15)
                 } else { // done elapsing, show window
                     marker.showInfoWindow()
                 }

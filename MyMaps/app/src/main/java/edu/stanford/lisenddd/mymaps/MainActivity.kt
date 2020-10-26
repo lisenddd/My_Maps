@@ -7,7 +7,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -107,6 +110,23 @@ class MainActivity : AppCompatActivity() {
             serializeUserMaps(this, userMaps)
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search_map, menu)
+        val searchItem = menu!!.findItem(R.id.siSearch)
+        val searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                mapAdapter.filter.filter(newText);
+                return false
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun serializeUserMaps(context: Context, userMaps: List<UserMap>) {
